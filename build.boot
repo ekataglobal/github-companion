@@ -15,9 +15,9 @@
  aot {:namespace   #{'github-companion.cli}}
  pom {:project     project
       :version     version
-      :description "FIXME: write description"
-      :url         "http://example/FIXME"
-      :scm         {:url "https://github.com/yourname/github-companion"}
+      :description "GitHub helper tool"
+      :url         "https://github.com/whitepages/github-companion"
+      :scm         {:url "https://github.com/whitepages/github-companion"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}}
  jar {:main        'github-companion.cli
