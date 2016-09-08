@@ -1,5 +1,5 @@
 (def project 'github-companion)
-(def version "0.1.0-SNAPSHOT")
+(def version "0.1.0")
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
