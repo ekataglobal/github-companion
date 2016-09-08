@@ -32,7 +32,7 @@
 (deftask run
   "Run the project."
   [a args ARG [str] "the arguments for the application."]
-  (require '[github-companion.core :as app])
+  (require '[github-companion.cli :as app])
   (apply (resolve 'app/-main) args))
 
 (require '[adzerk.boot-test :refer [test]])
