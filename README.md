@@ -32,12 +32,12 @@ The command option which works now is the `grant`.
 
 ### Authorization options
 
-`-a` or `--auth` USERNAME:PASSWORD
-`-o` or `--oauth-token` TOKEN
+ - `-a` or `--auth` USERNAME:PASSWORD
+ - `-o` or `--oauth-token` TOKEN
 
 ### Enterprise options
 
-`-u` or `--url` URL
+ - `-u` or `--url` URL
 
 ## Examples
 
