@@ -10,7 +10,7 @@
    ["-o" "--oauth-token TOKEN" "The OAuth token"
     :validate [#(= 40 (count %)) "Must be 40 characters long"]]
    ["-u" "--url URL" "URL for the API"
-    :validate [#(not-empty %) "Must be a valid URL"]]
+    :validate [not-empty "Must be a valid URL"]]
    ["-h" "--help"]])
 
 (defn usage [options-summary]
