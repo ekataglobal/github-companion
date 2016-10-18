@@ -25,7 +25,7 @@
         ""]
        (str/join \newline)))
 
-(defn error-msg [errors]
+(defn error-msg [& errors]
   (str "The following errors occurred while parsing your command:\n\n"
        (str/join \newline errors)))
 
@@ -49,7 +49,7 @@
     (cond
       (:help options) (exit 0 (usage summary))
       (zero? (count arguments)) (exit 1 (usage summary))
-      (not (credentials? options)) (exit 2 (error-msg ["Credentials are not available"]))
+      (not (credentials? options)) (exit 2 (error-msg "Credentials are not available"))
       errors (exit 1 (error-msg errors)))
     (run arguments options)
     (shutdown-agents)
