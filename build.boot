@@ -1,5 +1,4 @@
 (def project 'github-companion)
-(def version "0.2.0-SNAPSHOT")
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
@@ -9,19 +8,23 @@
                             [ch.qos.logback/logback-classic "RELEASE"]
                             [org.clojars.agilecreativity/tentacles "0.5.2"]
                             ;; [tentacles "RELEASE"]
-                            [adzerk/boot-test "RELEASE" :scope "test"]])
+                            [adzerk/boot-test "1.1.2" :scope "test"]
+                            [degree9/boot-semver "1.3.6" :scope "test"]])
+
+(require '[adzerk.boot-test :refer [test]]
+         '[degree9.boot-semver :refer :all])
 
 (task-options!
  aot {:namespace   #{'github-companion.cli}}
  pom {:project     project
-      :version     version
+      :version     (get-version)
       :description "GitHub helper tool"
       :url         "https://github.com/whitepages/github-companion"
       :scm         {:url "https://github.com/whitepages/github-companion"}
       :license     {"Eclipse Public License"
                     "http://www.eclipse.org/legal/epl-v10.html"}}
  jar {:main        'github-companion.cli
-      :file        (str "github-companion-" version ".jar")})
+      :file        (format "%s-%s.jar" project (get-version))})
 
 (deftask build
   "Build the project locally as a JAR."
@@ -34,5 +37,3 @@
   [a args ARG [str] "the arguments for the application."]
   (require '[github-companion.cli :as app])
   (apply (resolve 'app/-main) args))
-
-(require '[adzerk.boot-test :refer [test]])
