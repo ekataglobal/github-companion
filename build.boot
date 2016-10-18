@@ -2,10 +2,10 @@
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
-          :dependencies   '[[org.clojure/clojure "RELEASE"]
-                            [org.clojure/tools.cli "RELEASE"]
-                            [org.clojure/tools.logging "RELEASE"]
-                            [ch.qos.logback/logback-classic "RELEASE"]
+          :dependencies   '[[org.clojure/clojure "1.8.0"]
+                            [org.clojure/tools.cli "0.3.5"]
+                            [org.clojure/tools.logging "0.3.1"]
+                            [ch.qos.logback/logback-classic "1.1.7"]
                             [org.clojars.agilecreativity/tentacles "0.5.2"]
                             ;; [tentacles "RELEASE"]
                             [adzerk/boot-test "1.1.2" :scope "test"]
