@@ -5,8 +5,8 @@
             [tentacles
              [core :as core]
              [orgs :as orgs]
-             [users :as users]
-             [repos :as repos]]))
+             [repos :as repos]
+             [users :as users]]))
 
 (defn- url [options]
   (or (:url options) core/url))
@@ -45,11 +45,11 @@
 
 (defn- add-collaborator-fn [user repo options]
   (fn [collaborator]
-    (repos/add-collaborator user repo collaborator options)))
+    [collaborator (repos/add-collaborator user repo collaborator options)]))
 
 (defn- add-collaborators-fn [members options]
   (fn [{full-name :full_name}]
-    (log/debugf "Adding %s to %s" (pr-str members) full-name)
+    (log/debugf "Granting access to '%s'" full-name)
     (let [[user repo] (split-name full-name)]
       (map (add-collaborator-fn user repo options) members))))
 
@@ -57,16 +57,23 @@
   (log/debug "Fetching myself")
   (users/me options))
 
+(defn- log-results [results]
+  (doseq [[repo result] results]
+    (let [collabs (map first result)]
+      (log/debugf "Collaborators of '%s': %s" (:full_name repo) (str/join ", " collabs)))))
+
 (defn grant [team-ref options]
-  (log/infof "Granting access for '%s'" team-ref)
+  (log/infof "Granting access to '%s'" team-ref)
   (let [options (assoc options :all-pages true)]
     (client/with-connection-pool {:default-per-route 10}
       (core/with-url (url options)
         (let [[org team-name] (split-name team-ref)
-              user (future (fetch-me options))
-              team (future (fetch-team org team-name options))
-              team-repos (future (matching-team-repos org @team options))
-              members (future (remove #{(:login @user)} (team-members @team options)))]
-          (->> (fetch-user-repos org @team-repos options)
+              user            (future (fetch-me options))
+              team            (future (fetch-team org team-name options))
+              team-repos      (future (matching-team-repos org @team options))
+              members         (future (remove #{(:login @user)} (team-members @team options)))
+              user-repos      (fetch-user-repos org @team-repos options)]
+          (->> user-repos
                (pmap (add-collaborators-fn @members options))
-               (doall)))))))
+               (zipmap user-repos)
+               (log-results)))))))
