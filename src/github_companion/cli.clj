@@ -27,7 +27,8 @@
         options-summary
         ""
         "Actions:"
-        "  grant    Grant access to teammates"
+        "  grant      Grant access to teammates"
+        "  list-teams List team names"
         ""]
        (str/join \newline)))
 
@@ -66,6 +67,9 @@
 
 (defmethod run :grant [[_ team] options]
   (core/grant team options))
+
+(defmethod run :list-teams [[_ org] options]
+  (core/teams org options))
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args)]
