@@ -54,8 +54,8 @@
   (let [home (System/getProperty "user.home")
         config (io/file home config-name)]
     (walk/keywordize-keys
-     (cond-> options
-       (.exists config) (merge options (read-properties config))))))
+     (cond->> options
+       (.exists config) (merge {} (read-properties config))))))
 
 (defn- parse-opts [args]
   (-> args
