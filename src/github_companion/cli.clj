@@ -17,7 +17,7 @@
     :validate [not-empty "Must be a valid URL"]]
    ["-h" "--help"]])
 
-(defn usage [options-summary]
+(defn- usage [options-summary]
   (->> [""
         "Usage: github-companion [options] action"
         ""
@@ -29,11 +29,11 @@
         ""]
        (str/join \newline)))
 
-(defn error-msg [& errors]
+(defn- error-msg [& errors]
   (str "The following errors occurred while parsing your command:\n\n"
        (str/join \newline errors)))
 
-(defn exit
+(defn- exit
   ([status] (exit status nil))
   ([status msg]
    (when msg
