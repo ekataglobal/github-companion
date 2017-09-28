@@ -62,18 +62,32 @@
     (let [collabs (map first result)]
       (log/debugf "Collaborators of '%s': %s" (:full_name repo) (str/join ", " collabs)))))
 
+(defmacro with-options [options & body]
+  `(client/with-connection-pool {:default-per-route 10}
+     (core/with-url (url ~options)
+       ~@body)))
+
 (defn grant [team-ref options]
   (log/infof "Granting access to '%s'" team-ref)
   (let [options (assoc options :all-pages true)]
-    (client/with-connection-pool {:default-per-route 10}
-      (core/with-url (url options)
-        (let [[org team-name] (split-name team-ref)
-              user            (future (fetch-me options))
-              team            (future (fetch-team org team-name options))
-              team-repos      (future (matching-team-repos org @team options))
-              members         (future (remove #{(:login @user)} (team-members @team options)))
-              user-repos      (fetch-user-repos org @team-repos options)]
-          (->> user-repos
-               (pmap (add-collaborators-fn @members options))
-               (zipmap user-repos)
-               (log-results)))))))
+    (with-options options
+      (let [[org team-name] (split-name team-ref)
+            user            (future (fetch-me options))
+            team            (future (fetch-team org team-name options))
+            team-repos      (future (matching-team-repos org @team options))
+            members         (future (remove #{(:login @user)} (team-members @team options)))
+            user-repos      (fetch-user-repos org @team-repos options)]
+        (->> user-repos
+             (pmap (add-collaborators-fn @members options))
+             (zipmap user-repos)
+             (log-results))))))
+
+(defn- print-team [org team]
+  (log/infof "%s/%s - %s" org (:slug team) (:name team)))
+
+(defn teams [org options]
+  (log/infof "Listing teams in '%s'" org)
+  (with-options options
+    (->> (orgs/teams org options)
+         (map (partial print-team org))
+         (doall))))
