@@ -8,6 +8,8 @@
             [github-companion.core :as core])
   (:import java.util.Properties))
 
+(def config-name ".github-companion.properties")
+
 (def cli-options
   [["-a" "--auth USERNAME:PASSWORD" "Username and password"
     :validate [#(re-matches #"\S+:\S+" %) "Must be set as username:password"]]
@@ -50,7 +52,7 @@
 
 (defn- merge-properties [options]
   (let [home (System/getProperty "user.home")
-        config (io/file home ".github-companion.properties")]
+        config (io/file home config-name)]
     (walk/keywordize-keys
      (cond-> options
        (.exists config) (merge options (read-properties config))))))
