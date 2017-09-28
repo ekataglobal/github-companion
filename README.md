@@ -26,7 +26,8 @@ Run the uberjar:
 
 ## Commands
 
-The command option which works now is the `grant`.
+ - `grant` - Grants access to the selected team on your forks.
+ - `list-teams` - List teams in the selected organization.
 
 ## Options
 
@@ -57,6 +58,7 @@ url=https://my.example.org/api/v3/
 Then you could simply run:
 
     $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar grant org/team-slurp
+    $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar list-teams org
 
 ## License
 
