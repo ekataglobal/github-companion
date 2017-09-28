@@ -41,7 +41,22 @@ The command option which works now is the `grant`.
 
 ## Examples
 
-    $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar --url https://github.dev.pages/api/v3/ --oauth-token 0123456789abcdef0123456789abcdef01234567 grant org/team-slurp
+### Simple command line usage
+
+    $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar --url https://my.example.org/api/v3/ --oauth-token 0123456789abcdef0123456789abcdef01234567 grant org/team-slurp
+    
+### Properties file
+
+You can also set a properties file with the default options in your home directory `.github-companion.properties`:
+
+```data
+oauth-token=0123456789abcdef0123456789abcdef01234567
+url=https://my.example.org/api/v3/
+```
+
+Then you could simply run:
+
+    $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar grant org/team-slurp
 
 ## License
 
