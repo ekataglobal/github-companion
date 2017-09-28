@@ -64,8 +64,8 @@
 
 (defmacro with-options [options & body]
   `(client/with-connection-pool {:default-per-route 10}
-    (core/with-url (url ~options)
-      ~@body)))
+     (core/with-url (url ~options)
+       ~@body)))
 
 (defn grant [team-ref options]
   (log/infof "Granting access to '%s'" team-ref)
@@ -89,5 +89,5 @@
   (log/infof "Listing teams in '%s'" org)
   (with-options options
     (->> (orgs/teams org options)
-        (map (partial print-team org))
-        (doall))))
+         (map (partial print-team org))
+         (doall))))
