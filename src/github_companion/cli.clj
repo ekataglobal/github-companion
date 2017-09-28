@@ -1,8 +1,12 @@
 (ns github-companion.cli
   (:gen-class)
-  (:require [clojure.string :as str]
+  (:require [clojure
+             [string :as str]
+             [walk :as walk]]
+            [clojure.java.io :as io]
             [clojure.tools.cli :as cli]
-            [github-companion.core :as core]))
+            [github-companion.core :as core])
+  (:import java.util.Properties))
 
 (def cli-options
   [["-a" "--auth USERNAME:PASSWORD" "Username and password"
@@ -39,13 +43,30 @@
 (defn- credentials? [options]
   (some identity (map options [:auth :oauth-token])))
 
+(defn- read-properties [file]
+  (with-open [reader (io/reader file)]
+    (doto (Properties.)
+      (.load reader))))
+
+(defn- merge-properties [options]
+  (let [home (System/getProperty "user.home")
+        config (io/file home ".github-companion.properties")]
+    (walk/keywordize-keys
+     (cond-> options
+       (.exists config) (merge options (read-properties config))))))
+
+(defn- parse-opts [args]
+  (-> args
+      (cli/parse-opts cli-options)
+      (update :options merge-properties)))
+
 (defmulti run (fn [args _] (keyword (first args))))
 
 (defmethod run :grant [[_ team] options]
   (core/grant team options))
 
 (defn -main [& args]
-  (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-options)]
+  (let [{:keys [options arguments errors summary]} (parse-opts args)]
     (cond
       (:help options) (exit 0 (usage summary))
       (zero? (count arguments)) (exit 1 (usage summary))
