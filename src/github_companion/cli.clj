@@ -30,6 +30,7 @@
         "  grant        Grant access to teammates"
         "  list-teams   List team names"
         "  protect      Secure repository"
+        "  protect-team Secure all repositories of a team"
         ""]
        (str/join \newline)))
 
@@ -69,11 +70,15 @@
 (defmethod run :grant [[_ team] options]
   (core/grant team options))
 
+(defmethod run :list-teams [[_ org] options]
+  (core/teams org options))
+
 (defmethod run :protect [[_ repository] options]
   (core/protect repository options))
 
-(defmethod run :list-teams [[_ org] options]
-  (core/teams org options))
+(defmethod run :protect-team [[_ team] options]
+  (core/protect-team team options))
+
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args)]
