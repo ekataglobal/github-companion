@@ -6,8 +6,7 @@
                             [org.clojure/tools.cli "0.3.5"]
                             [org.clojure/tools.logging "0.3.1"]
                             [ch.qos.logback/logback-classic "1.1.7"]
-                            [org.clojars.agilecreativity/tentacles "0.5.2"]
-                            ;; [tentacles "RELEASE"]
+                            [irresponsible/tentacles "0.6.1"]
                             [adzerk/boot-test "1.1.2" :scope "test"]
                             [degree9/boot-semver "1.3.6" :scope "test"]])
 

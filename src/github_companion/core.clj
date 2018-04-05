@@ -90,4 +90,48 @@
   (with-options options
     (->> (orgs/teams org options)
          (map (partial print-team org))
-         (doall))))
+         (dorun))))
+
+(defn- protect-branch [owner repo branch options]
+  (core/api-call
+   :put
+   "repos/%s/%s/branches/%s/protection"
+   [owner repo branch]
+   (merge options
+          {:required-status-checks        nil
+           :enforce-admins                true
+           :required-pull-request-reviews {:dismiss-stale-reviews           true
+                                           :required-approving-review-count 1}
+           :restrictions                  nil})))
+
+(defn protect
+  ([full-repository options]
+   (let [[owner repo] (split-name full-repository)]
+     (protect owner repo options)))
+  ([owner repo options]
+   (log/infof "Protecting repository '%s/%s'" owner repo)
+   (with-options options
+     (repos/edit-repo owner repo (merge options
+                                        {:allow-squash-merge false
+                                         :allow-rebase-merge false}))
+     (protect-branch owner repo "master" options))))
+
+(defn protect-team [team-ref options]
+  (log/infof "Protecting team '%s'" team-ref)
+  (let [options (assoc options :all-pages true)]
+    (with-options options
+      (let [[org team-name] (split-name team-ref)
+            team            (fetch-team org team-name options)]
+        (->> options
+             (matching-team-repos org team)
+             (pmap #(protect org % options))
+             (dorun))))))
+
+(comment
+  (def options (#'github-companion.cli/merge-properties {}))
+
+  (protect "pro/project" options)
+
+  (teams "pro" options)
+
+  (protect-team "pro/pro-services" options))
