@@ -79,7 +79,6 @@
 (defmethod run :protect-team [[_ team] options]
   (core/protect-team team options))
 
-
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args)]
     (cond
