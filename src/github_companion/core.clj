@@ -91,3 +91,27 @@
     (->> (orgs/teams org options)
          (map (partial print-team org))
          (doall))))
+
+(defn- protect-branch [owner repo branch options]
+  (core/api-call
+   :put
+   "repos/%s/%s/branches/%s/protection"
+   [owner repo branch]
+   (merge options
+          {:required-status-checks        nil
+           :enforce-admins                true
+           :required-pull-request-reviews {:dismiss-stale-reviews           true
+                                           :required-approving-review-count 1}
+           :restrictions                  nil})))
+
+(defn protect [full-repository options]
+  (log/infof "Securing repository '%s'" full-repository)
+  (with-options options
+    (let [[owner repo] (split-name full-repository)]
+      (repos/edit-repo owner repo (merge options
+                                         {:allow-squash-merge false
+                                          :allow-rebase-merge false}))
+      (protect-branch owner repo "master" options))))
+
+(comment
+  (protect "pro/project" (#'github-companion.cli/merge-properties {})))

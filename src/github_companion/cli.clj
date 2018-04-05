@@ -27,8 +27,9 @@
         options-summary
         ""
         "Actions:"
-        "  grant      Grant access to teammates"
-        "  list-teams List team names"
+        "  grant        Grant access to teammates"
+        "  list-teams   List team names"
+        "  protect      Secure repository"
         ""]
        (str/join \newline)))
 
@@ -67,6 +68,9 @@
 
 (defmethod run :grant [[_ team] options]
   (core/grant team options))
+
+(defmethod run :protect [[_ repository] options]
+  (core/protect repository options))
 
 (defmethod run :list-teams [[_ org] options]
   (core/teams org options))
