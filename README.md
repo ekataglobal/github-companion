@@ -28,6 +28,8 @@ Run the uberjar:
 
  - `grant` - Grants access to the selected team on your forks.
  - `list-teams` - List teams in the selected organization.
+ - `protect` - Secures a repository.
+ - `protect-team` - Secures all repositories of a team.
 
 ## Options
 
@@ -59,6 +61,8 @@ Then you could simply run:
 
     $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar grant org/team-slurp
     $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar list-teams org
+    $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar protect org/repo
+    $ java -jar target/github-companion-0.1.0-SNAPSHOT.jar protect-team org/team-slurp
 
 ## License
 
