@@ -90,7 +90,7 @@
   (with-options options
     (->> (orgs/teams org options)
          (map (partial print-team org))
-         (doall))))
+         (dorun))))
 
 (defn- protect-branch [owner repo branch options]
   (core/api-call
