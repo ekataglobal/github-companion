@@ -99,9 +99,11 @@
    [owner repo branch]
    (merge options
           {:required-status-checks        nil
-           :enforce-admins                true
-           :required-pull-request-reviews {:dismiss-stale-reviews           true
-                                           :required-approving-review-count 1}
+           :enforce-admins                false
+           :required-pull-request-reviews {:dismiss-stale_reviews           true
+                                           :required-approving-review-count 1
+                                           :require-code-owner-reviews      false
+                                           :dismissal-restrictions          nil}
            :restrictions                  nil})))
 
 (defn protect
