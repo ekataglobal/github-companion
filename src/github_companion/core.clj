@@ -100,10 +100,10 @@
    (merge options
           {:required-status-checks        nil
            :enforce-admins                false
-           :required-pull-request-reviews {:dismiss-stale_reviews           true
-                                           :required-approving-review-count 1
-                                           :require-code-owner-reviews      false
-                                           :dismissal-restrictions          nil}
+           :required-pull-request-reviews {:dismiss_stale_reviews           true
+                                           :required_approving_review_count 1
+                                           :require_code_owner_reviews      false
+                                           :dismissal_restrictions          {}}
            :restrictions                  nil})))
 
 (defn protect
