@@ -2,12 +2,12 @@
 
 (set-env! :resource-paths #{"resources" "src"}
           :source-paths   #{"test"}
-          :dependencies   '[[org.clojure/clojure "1.8.0"]
-                            [org.clojure/tools.cli "0.3.5"]
-                            [org.clojure/tools.logging "0.3.1"]
-                            [ch.qos.logback/logback-classic "1.1.7"]
-                            [irresponsible/tentacles "0.6.1"]
-                            [adzerk/boot-test "1.1.2" :scope "test"]
+          :dependencies   '[[org.clojure/clojure "1.10.0"]
+                            [org.clojure/tools.cli "0.4.2"]
+                            [org.clojure/tools.logging "0.4.1"]
+                            [ch.qos.logback/logback-classic "1.2.3"]
+                            [irresponsible/tentacles "0.6.3"]
+                            [adzerk/boot-test "1.2.0" :scope "test"]
                             [degree9/boot-semver "1.3.6" :scope "test"]])
 
 (require '[adzerk.boot-test :refer [test]]
