@@ -54,7 +54,7 @@
       (.load reader))))
 
 (defn- merge-properties [options]
-  (let [home (System/getProperty "user.home")
+  (let [home   (System/getProperty "user.home")
         config (io/file home config-name)]
     (walk/keywordize-keys
      (cond->> options

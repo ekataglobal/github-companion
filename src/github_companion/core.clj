@@ -98,7 +98,9 @@
    "repos/%s/%s/branches/%s/protection"
    [owner repo branch]
    (merge options
-          {:required-status-checks        nil
+          {:accept                        "application/vnd.github.luke-cage-preview+json"
+           :throw-exceptions              true
+           :required-status-checks        nil
            :enforce-admins                false
            :required-pull-request-reviews {:dismiss_stale_reviews           true
                                            :required_approving_review_count 1
